@@ -6,6 +6,16 @@ var models = {
     Account: require('../lib/models/account')
 };
 
+/**
+ * Use oauth token to grab account. If an account does not exist, create one.
+ */
+router.get('/v1/oauth', function (request, response, next) {
+    response.json('Not implemented');
+});
+
+/**
+ * Inject account into request from token
+ */
 router.get('/v1/*', function (request, response, next) {
     var account_model = new models.Account(),
         token = request.headers.authorization || false;
@@ -27,8 +37,6 @@ router.get('/v1/*', function (request, response, next) {
 router.get('/v1/:entity/:id?', function (request, response) {
     response.json({
         account: request.account.toJson(),
-        entity: request.params.entity,
-        id: request.params.id || null
     });
 });
 

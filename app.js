@@ -1,17 +1,17 @@
-var express = require('express');
-var logger = require('morgan');
-var bodyParser = require('body-parser');
+var express = require('express'),
+    logger = require('morgan'),
+    bodyParser = require('body-parser'),
+    cors = require('cors'),
+    app = express();
 
-var apiv1 = require('./routes/apiv1');
-var error_handler = require('./routes/errors');
-
-var app = express();
-
+// App setup
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use(apiv1);
-app.use(error_handler);
+// Routes
+app.use(cors());
+app.use(require('./routes/apiv1'));
+app.use(require('./routes/errors'));
 
 module.exports = app;
