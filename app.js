@@ -1,17 +1,19 @@
 var express = require('express'),
-    logger = require('morgan'),
+    morgan = require('morgan'),
     bodyParser = require('body-parser'),
-    cors = require('cors'),
+    RouteManager = require('./routes/manager'),
     app = express();
 
 // App setup
-app.use(logger('dev'));
+app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Routes
-app.use(cors());
-app.use(require('./routes/apiv1'));
-app.use(require('./routes/errors'));
+var route_manager = new RouteManager(app);
+route_manager
+    .register(require('cors')())
+    .register(require('./routes/apiv1'))
+    .register(require('./routes/errors'));
 
 module.exports = app;

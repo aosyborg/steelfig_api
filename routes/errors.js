@@ -1,7 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
-var error_handler = function(request, response, error) {
+module.exports = error_handler;
+
+function error_handler (request, response, error) {
     error = error || {}
     response.status(error.status || 500);
     response.json({ error: {
@@ -10,5 +12,3 @@ var error_handler = function(request, response, error) {
         }
     });
 };
-
-module.exports = error_handler;
