@@ -11,9 +11,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Routes
 app.use(require('cors')());
 app.use(require('./routes/index'));
-app.use(require('./routes/oauth'));
+app.use(require('./routes/auth'));
 app.use(require('./routes/user'));
 app.use(require('./routes/account'));
+app.use(require('./routes/event'));
+app.use(require('./routes/wishlist'));
 app.use(require('./routes/errors'));
 
 module.exports = app;

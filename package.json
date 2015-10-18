@@ -7,12 +7,14 @@
     "test": "NODE_ENV=test mocha test --recursive"
   },
   "dependencies": {
-    "body-parser": "^1.13.3",
+    "async": "*",
+    "body-parser": "*",
     "cors": "*",
-    "express": "^5.0.0-alpha.2",
-    "lodash": "^3.10.0",
-    "morgan": "^1.6.1",
-    "mysql": "*",
-    "async": "*"
+    "express": "*",
+    "express-form": "^0.12.4",
+    "googleapis": "*",
+    "lodash": "*",
+    "morgan": "*",
+    "mysql": "*"
   }
 }
