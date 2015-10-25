@@ -26,7 +26,7 @@ router.post('/v1/wishlist/item', itemValidation, function (request, response, ne
         );
     }
 
-    item.accountId = request.user.accountId;
+    item.accountId = request.account.id;
     wishlistModel.addItem(item, function (error, wishlist) {
         console.log(error);
         response.json({
@@ -38,7 +38,7 @@ router.post('/v1/wishlist/item', itemValidation, function (request, response, ne
 router.delete('/v1/wishlist/item/:itemId', function (request, response, next) {
     var wishlistModel = new Wishlist(),
         itemId = request.params.itemId,
-        accountId = request.user.accountId;
+        accountId = request.account.id;
 
     wishlistModel.delete(itemId, accountId, function (error) {
         if (error) {
