@@ -17,6 +17,7 @@ app.use(require('./routes/account'));
 app.use(require('./routes/event'));
 app.use(require('./routes/wishlist'));
 app.use(require('./routes/message'));
+app.use(require('./routes/schedule'));
 app.use(require('./routes/errors'));
 
 module.exports = app;
