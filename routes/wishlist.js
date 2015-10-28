@@ -16,6 +16,25 @@ router.get('/v1/wishlist', function (request, response, next) {
     });
 });
 
+router.get('/v1/wishlist/:attendeeId', function (request, response, next) {
+    var wishlistModel = new Wishlist(),
+        attendeeId = request.params.attendeeId,
+        accountId = request.account.id;
+
+    wishlistModel.fromAttendee(attendeeId, accountId, function (error, wishlist) {
+        if (error) {
+            console.log(error);
+            return next(
+                new exceptions.BadEntity(error)
+            );
+        }
+
+        response.json({
+            wishlist: wishlist.toJson()
+        });
+    });
+});
+
 router.post('/v1/wishlist/item', itemValidation, function (request, response, next) {
     var wishlistModel = new Wishlist(),
         item = request.body || {};
@@ -28,7 +47,13 @@ router.post('/v1/wishlist/item', itemValidation, function (request, response, ne
 
     item.accountId = request.account.id;
     wishlistModel.addItem(item, function (error, wishlist) {
-        console.log(error);
+        if (error) {
+            console.log(error);
+            return next(
+                new exceptions.BadEntity(error)
+            );
+        }
+
         response.json({
             wishlist: wishlist.toJson()
         });
@@ -51,6 +76,22 @@ router.delete('/v1/wishlist/item/:itemId', function (request, response, next) {
         response.json(true);
     });
 
+});
+
+router.put('/v1/wishlist/item', function (request, response, next) {
+    var wishlistModel = new Wishlist(),
+        item = request.body.item;
+
+    wishlistModel.updateItem(item, function (error, item) {
+        if (error) {
+            console.log(error);
+            return next(
+                new exceptions.BadEntity(error)
+            );
+        }
+
+        response.json(item);
+    });
 });
 
 module.exports = router;

@@ -23,12 +23,13 @@ router.post('/v1/auth', function (request, response, next) {
                 return next(new exceptions.Unauthorized({message: error}));
             }
 
-            // User user info incase anything changed
+            // Update user info incase anything changed
             user.avatar = userData.avatar;
             user.name = userData.name;
-            user.save();
+            user.save(function (error, updatedUser) {
+                response.json({'user': updatedUser.toJson()});
+            });
 
-            response.json({'user': user.toJson()});
         });
     });
 });
@@ -57,7 +58,7 @@ router.use('/v1/*', function (request, response, next) {
         // Load account
         function (user, callback) {
             var account = new Account();
-            account.fromUser(user, function (account) {
+            account.fromUser(user, function (error, account) {
                 if (!account) {
                     callback(new exceptions.Unauthorized());
                 }
