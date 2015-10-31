@@ -12,8 +12,23 @@ router.get('/v1/account', function (request, response, next) {
     response.json({
         account: request.account.toJson()
     });
+});
 
-    next();
+router.patch('/v1/account', function (request, response, next) {
+    var account = request.account;
+
+    account.update(request.body, function (error, account) {
+        if (error) {
+            console.log(error);
+            return next(
+                new exceptions.BadEntity(error)
+            );
+        }
+
+        response.json({
+            account: account.toJson()
+        });
+    });
 });
 
 router.post('/v1/account/link', linkValidation, function (request, response, next) {
