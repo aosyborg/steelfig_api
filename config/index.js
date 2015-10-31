@@ -1,18 +1,10 @@
 var _ = require('lodash');
 
-module.exports = function (environment) {
-    var config = {
-        defaults: {
-            mysql: {
-                host: 'localhost',
-                user: 'root',
-                password: '',
-                database: 'steelfig'
-            }
-        },
-        development: {
-        }
-    };
-
-    return _.assign({}, config.defaults, config[environment]);
-}(process.env.APPLICATION_ENV || 'development');
+module.exports = {
+    mysql: {
+        host: process.env.STEELFIG_DB_HOST ||'localhost',
+        user: process.env.STEELFIG_DB_USER || 'root',
+        password: process.env.STEELFIG_DB_PASSWORD || '',
+        database: 'steelfig'
+    }
+};
