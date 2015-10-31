@@ -1,0 +1,58 @@
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides: steelfig
+# Required-Start: $remote_fs $syslog
+# Required-Stop: $remote_fs $syslog
+# Default-Start: 2 3 4 5
+# Default-Stop: 1
+# Short-Description: steelfig for Concur Blue Slack group
+### END INIT INFO
+
+# This will prevent initlog from swallowing up a pass-phrase prompt if
+# mod_ssl needs a pass-phrase from the user.
+INITLOG_ARGS=""
+
+USER=steelfig
+EXEC=/opt/steelfig/bin/www
+PIDFILE=/var/run/steelfig.pid
+
+. /lib/lsb/init-functions
+test -x $EXEC || exit 0
+
+# ========================================
+# Options
+# ----------------------------------------
+
+case "$1" in
+  start)
+    log_daemon_msg "Starting  steelfig"
+
+    if start-stop-daemon --start --quiet --oknodo --make-pidfile --background --chuid $USER --pidfile $PIDFILE \
+                    --startas /bin/bash -- -c "exec $EXEC | logger -i -t steelfig"; then
+
+        log_end_msg 0
+    else
+        log_end_msg 1
+    fi
+    ;;
+
+  stop)
+    log_daemon_msg "Stopping  steelfig"
+
+    if start-stop-daemon --stop --quiet --oknodo --pidfile $PIDFILE; then
+        log_end_msg 0
+    else
+        log_end_msg 1
+    fi
+    ;;
+
+  status)
+        status_of_proc -p $PIDFILE $EXEC steelfig && exit 0 || exit $?
+        ;;
+  *)
+        log_action_msg "Usage: /etc/init.d steelfig {start|stop|status}"
+        exit 1
+esac
+
+exit 0
+

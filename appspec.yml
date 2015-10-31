@@ -1,0 +1,49 @@
+os: linux
+version: 0.0
+files:
+  - source: bin
+    destination: /opt/steelfig/bin
+
+  - source: config
+    destination: /opt/steelfig/config
+
+  - source: lib
+    destination: /opt/steelfig/lib
+
+  - source: routes
+    destination: /opt/steelfig/routes
+
+  - source: node_modules
+    destination: /opt/steelfig/node_modules
+
+  - source: app.js
+    destination: /opt/steelfig
+
+  - source: dist/etc/nginx/sites-available/steelfig
+    destination: /etc/nginx/sites-available
+
+  - source: dist/etc/nginx/sites-enabled/steelfig
+    destination: /etc/nginx/sites-enabled
+
+  - source: dist/etc/init.d/steelfig
+    destination: /etc/init.d
+
+  - source: dist/etc/monit/conf.d/steelfig.conf
+    destination: /etc/monit/conf.d
+
+  - source: dist/etc/rsyslog.d/10-steelfig.conf
+    destination: /etc/rsyslog.d
+
+permissions:
+  - object: /etc/init.d/steelfig
+    mode: 755
+
+hooks:
+  AfterInstall:
+    - location: dist/after_install.sh
+      runas: root
+
+  ApplicationStart:
+    - location: dist/application_start.sh
+      runas: root
+

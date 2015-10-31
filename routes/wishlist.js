@@ -78,19 +78,20 @@ router.delete('/v1/wishlist/item/:itemId', function (request, response, next) {
 
 });
 
-router.put('/v1/wishlist/item', function (request, response, next) {
+router.patch('/v1/wishlist/purchase/item/:itemId', function (request, response, next) {
     var wishlistModel = new Wishlist(),
-        item = request.body.item;
+        itemId = request.params.itemId,
+        accountId = request.account.id;
 
-    wishlistModel.updateItem(item, function (error, item) {
+    wishlistModel.markPurchased(itemId, accountId, function (error, item) {
         if (error) {
             console.log(error);
             return next(
-                new exceptions.BadEntity(error)
+                new exceptions.NotFound(error)
             );
         }
 
-        response.json(item);
+        response.json(true);
     });
 });
 

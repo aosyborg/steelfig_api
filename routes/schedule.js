@@ -5,7 +5,7 @@ var express = require('express'),
     Schedule = require('../lib/models/schedule');
 
 var getScheduleValidation = require('../lib/validation/v1_get_schedule'),
-    postScheduleValidation = require('../lib/validation/v1_post_schedule');
+    patchScheduleValidation = require('../lib/validation/v1_patch_schedule');
 
 router.get('/v1/schedule', getScheduleValidation, function (request, response, next) {
     var schedule = new Schedule()
@@ -29,7 +29,7 @@ router.get('/v1/schedule', getScheduleValidation, function (request, response, n
     });
 });
 
-router.post('/v1/schedule', postScheduleValidation, function (request, response, next) {
+router.patch('/v1/schedule', patchScheduleValidation, function (request, response, next) {
     var schedule = new Schedule(),
         data = request.form;
 
@@ -40,7 +40,7 @@ router.post('/v1/schedule', postScheduleValidation, function (request, response,
     }
 
     data.accountId = request.account.id;
-    schedule.add(request.form, function (error, day) {
+    schedule.modify(request.form, function (error, day) {
         if (error) {
             console.log(error);
             return next(
@@ -49,23 +49,6 @@ router.post('/v1/schedule', postScheduleValidation, function (request, response,
         }
 
         response.json(day[0]);
-    });
-});
-
-router.delete('/v1/schedule/:scheduleId', function (request, response, next) {
-    var schedule = new Schedule(),
-        scheduleId = request.params.scheduleId,
-        accountId = request.account.id;
-
-    schedule.delete(accountId, scheduleId, function (error) {
-        if (error) {
-            console.log(error);
-            return next(
-                new exceptions.NotFound(error)
-            );
-        }
-
-        response.json(true);
     });
 });
 
