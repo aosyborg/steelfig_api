@@ -12,6 +12,13 @@ router.get('/v1/event/:eventId/attendees', function (request, response, next) {
         attendeesModel = new Attendees();
 
     attendeesModel.fromEvent(eventId, function (error, attendees) {
+        if (error) {
+            console.log(error);
+            return next(
+                new exceptions.BadEntity(error)
+            );
+        }
+
         response.json({
             attendees: attendees.toJson()
         });
