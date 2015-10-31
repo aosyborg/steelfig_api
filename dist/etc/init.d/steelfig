@@ -27,12 +27,12 @@ case "$1" in
   start)
     log_daemon_msg "Starting  steelfig"
 
-    if [[ -d /etc/steelfig.conf ]]; then
+    if [[ -f /etc/steelfig.conf ]]; then
         source /etc/steelfig.conf
     fi
 
     if start-stop-daemon --start --quiet --oknodo --make-pidfile --background --chuid $USER --pidfile $PIDFILE \
-                    --startas /bin/bash -- -c "exec $EXEC | logger -i -t steelfig"; then
+                    --startas /bin/bash -- -c "exec $EXEC >> /var/log/steelfig.log 2>&1"; then
 
         log_end_msg 0
     else
