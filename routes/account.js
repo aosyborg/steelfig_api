@@ -55,7 +55,6 @@ router.post('/v1/account/link', linkValidation, function (request, response, nex
         // Notify users that someone is joining forces with them
         // Note: this is an async operation and will not wait for success
         function (users, result, callback) {
-            console.log(callback);
             email.notifyOfAccountLink(request.user.name, users);
             callback(null);
         },
@@ -117,7 +116,6 @@ router.patch('/v1/account/link', function (request, response, next) {
         // Notify users that someone is joining forces with them
         // Note: this is an async operation and will not wait for success
         function (users, result, callback) {
-            console.log(users);
             email.notifyOfAccountUnLink(request.user.name, users);
             callback(null);
         },
