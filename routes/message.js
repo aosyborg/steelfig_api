@@ -1,6 +1,7 @@
 var express = require('express'),
     router = express.Router(),
     async = require('async'),
+    email = require('../lib/email'),
     exceptions = require('../lib/exceptions'),
     Message = require('../lib/models/message');
 
@@ -43,6 +44,7 @@ router.post('/v1/message', messageValidation, function (request, response, next)
             );
         }
 
+        email.newMessage(data.toId);
         response.json(messages);
     });
 });
@@ -83,6 +85,15 @@ router.post('/v1/message/reply', replyValidation, function (request, response, n
                 new exceptions.BadEntity(error)
             );
         }
+
+        message = new Message();
+        message.fromId(data.replyTo, function (error, message) {
+            if (error) {
+                return console.log(error);
+            }
+
+            email.newMessage(message[0].from_id);
+        });
 
         response.json(messages);
     });

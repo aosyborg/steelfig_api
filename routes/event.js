@@ -2,6 +2,7 @@ var express = require('express'),
     router = express.Router(),
     async = require('async'),
     exceptions = require('../lib/exceptions'),
+    email = require('../lib/email'),
     Attendees = require('../lib/models/attendees');
 
 var inviteValidation = require('../lib/validation/v1_event_invite'),
@@ -52,7 +53,7 @@ router.post('/v1/event/invite', inviteValidation, function (request, response, n
     }
 
     attendeesModel.invite(request.body, function (error, attendees) {
-        // TODO: email invitation
+        email.sendInvite(request.body);
         response.json({
             attendees: attendees.toJson()
         });

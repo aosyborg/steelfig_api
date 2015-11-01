@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "async": "*",
+    "aws-sdk": "^2.2.13",
     "body-parser": "*",
     "cors": "*",
     "debug": "^2.2.0",

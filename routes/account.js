@@ -4,6 +4,7 @@ var express = require('express'),
     Account = require('../lib/models/account'),
     User = require('../lib/models/user'),
     Attendees = require('../lib/models/attendees'),
+    email = require('../lib/email')
     exceptions = require('../lib/exceptions');
 
 var linkValidation = require('../lib/validation/v1_account_link');
@@ -46,6 +47,19 @@ router.post('/v1/account/link', linkValidation, function (request, response, nex
     }
 
     async.waterfall([
+        // Load users from account
+        function (callback) {
+            user.fromAccountId(newAccountId, callback);
+        },
+
+        // Notify users that someone is joining forces with them
+        // Note: this is an async operation and will not wait for success
+        function (users, result, callback) {
+            console.log(callback);
+            email.notifyOfAccountLink(request.user.name, users);
+            callback(null);
+        },
+
         // Link account
         function (callback) {
             account.link(eventId, orgAccountId, newAccountId, callback);
@@ -90,13 +104,26 @@ router.patch('/v1/account/link', function (request, response, next) {
         userId = request.user.id;
 
     async.waterfall([
-        // Link account
+        // Unlink account
         function (callback) {
             account.unlink(userId, callback);
         },
 
-        // Load new user profile
+        // Load users from old account
         function (accountInfo, callback) {
+            user.fromAccountId(request.account.id, callback);
+        },
+
+        // Notify users that someone is joining forces with them
+        // Note: this is an async operation and will not wait for success
+        function (users, result, callback) {
+            console.log(users);
+            email.notifyOfAccountUnLink(request.user.name, users);
+            callback(null);
+        },
+
+        // Load new user profile
+        function (callback) {
             user.fromId(request.user.id, callback);
         },
 

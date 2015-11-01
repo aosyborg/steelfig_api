@@ -1,0 +1,9 @@
+Hi NAME,
+
+You've been invited to join EVENT_NAME.
+
+MESSAGE
+
+To join visit http://www.steelfig.com and login using your Google account.
+
+Steelfig
