@@ -16,6 +16,9 @@ files:
   - source: node_modules
     destination: /opt/steelfig/node_modules
 
+  - source: templates
+    destination: /opt/steelfig/templates
+
   - source: app.js
     destination: /opt/steelfig
 
