@@ -48,7 +48,10 @@ router.use('/v1/*', function (request, response, next) {
             var user = new User();
             user.fromToken(token, function (error, user) {
                 if (error) {
-                    callback(new exceptions.Unauthorized());
+                    return callback(new exceptions.Unauthorized());
+                }
+                if (!user) {
+                    console.log('Error: Unable to load user', token);
                 }
 
                 request.user = user;
@@ -61,7 +64,7 @@ router.use('/v1/*', function (request, response, next) {
             var account = new Account();
             account.fromUser(user, function (error, account) {
                 if (!account) {
-                    callback(new exceptions.Unauthorized());
+                    return callback(new exceptions.Unauthorized());
                 }
 
                 request.account = account;
