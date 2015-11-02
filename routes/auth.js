@@ -20,6 +20,7 @@ router.post('/v1/auth', function (request, response, next) {
         var user = new User();
         user.fromEmail(userData.email, function (error, user) {
             if (error) {
+                console.log(userData, error);
                 return next(new exceptions.Unauthorized({message: error}));
             }
 
