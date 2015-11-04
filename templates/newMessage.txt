@@ -1,6 +1,6 @@
 Hi NAME,
 
 You have a new message on Steelfig! To read the message and reply, visit
-http://steelfig.com and click "My Messages" once logged.
+http://steelfig.com and click "My Messages" once logged in.
 
 Steelfig
