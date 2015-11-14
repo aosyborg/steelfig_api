@@ -14,6 +14,7 @@ var express = require('express'),
 router.post('/v1/auth', function (request, response, next) {
     oauthProviders.googleUser(request.body.access_token, function (error, userData) {
         if (error) {
+            console.log(error);
             return next(error);
         }
 
