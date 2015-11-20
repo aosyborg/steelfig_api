@@ -33,14 +33,14 @@ router.patch('/v1/schedule', patchScheduleValidation, function (request, respons
     var schedule = new Schedule(),
         data = request.form;
 
-    if (!request.form.isValid) {
+    if (!data.isValid) {
         return next(
-            new exceptions.BadEntity({validation: request.form.errors })
+            new exceptions.BadEntity({validation: data.errors })
         );
     }
 
     data.accountId = request.account.id;
-    schedule.modify(request.form, function (error, day) {
+    schedule.modify(data, function (error, day) {
         if (error) {
             console.log(error);
             return next(
